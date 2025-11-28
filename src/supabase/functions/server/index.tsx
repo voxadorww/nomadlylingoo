@@ -281,42 +281,66 @@ Format as JSON with this structure:
     // Format prompt for Gemini
     const fullPrompt = `You are a Spanish language teacher creating adaptive lessons. ${prompt}\n\nIMPORTANT: Respond with ONLY valid JSON, no other text.`;
     
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateMessage?key=${geminiKey}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Use messages instead of contents/parts
-          messages: [
-            {
-              role: "system", // system role sets instructions
-              content: fullPrompt,
-            },
-          ],
-          temperature: 0.7,
-          maxOutputTokens: 2048,
-        }),
-      }
-    );
+    // Try different Gemini models in order
+    const modelsToTry = [
+      'gemini-1.5-flash-latest',
+      'gemini-1.5-flash',
+      'gemini-1.0-pro-latest',
+      'gemini-pro'
+    ];
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.log(`Gemini API error (status ${response.status}): ${errorText}`);
-      return c.json({ error: `Failed to generate lesson from AI: ${response.status} - ${errorText}` }, 500);
+    let lastError = null;
+    let responseData = null;
+
+    for (const model of modelsToTry) {
+      try {
+        console.log(`Trying model: ${model}`);
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
+        
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: fullPrompt
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              maxOutputTokens: 2048,
+            }
+          })
+        });
+
+        if (response.ok) {
+          responseData = await response.json();
+          console.log(`Success with model: ${model}`);
+          break;
+        } else {
+          const errorText = await response.text();
+          lastError = `Model ${model}: ${response.status} - ${errorText}`;
+          console.log(`Failed with model ${model}: ${response.status}`);
+        }
+      } catch (modelError) {
+        lastError = `Model ${model}: ${modelError.message}`;
+        console.log(`Error with model ${model}:`, modelError);
+      }
     }
 
-    const data = await response.json();
-    console.log('Gemini response received:', JSON.stringify(data).substring(0, 200));
+    if (!responseData) {
+      console.log('All models failed:', lastError);
+      return c.json({ error: `Failed to generate lesson from AI. Last error: ${lastError}` }, 500);
+    }
     
-    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content[0]) {
-      console.log('Invalid Gemini response structure:', JSON.stringify(data));
+    if (!responseData.candidates || !responseData.candidates[0] || !responseData.candidates[0].content || !responseData.candidates[0].content.parts || !responseData.candidates[0].content.parts[0]) {
+      console.log('Invalid Gemini response structure:', JSON.stringify(responseData));
       return c.json({ error: 'Invalid response from AI' }, 500);
     }
-
-    let responseText = data.candidates[0].content[0].text;
+    
+    let responseText = responseData.candidates[0].content.parts[0].text;
     
     // Remove markdown code blocks if present
     responseText = responseText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
