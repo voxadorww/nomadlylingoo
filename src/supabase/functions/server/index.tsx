@@ -122,6 +122,7 @@ app.get("/make-server-91c142be/profile", async (c) => {
 });
 
 // Generate lesson endpoint - FINAL WORKING VERSION
+// Generate lesson endpoint - EXPANDED STAGES WITHIN EACH CATEGORY
 app.post("/make-server-91c142be/generate-lesson", async (c) => {
   try {
     console.log('Generate lesson endpoint called');
@@ -154,131 +155,535 @@ app.post("/make-server-91c142be/generate-lesson", async (c) => {
     const mistakes = progress.mistakes || [];
 
     let prompt = '';
+    
+    // EXPANDED: Each stage category now has multiple sub-levels
     switch (stage) {
+      // ========== VOCABULARY STAGES (1-10) ==========
       case 1:
-        prompt = `Generate a Spanish vocabulary lesson for absolute beginners. Include:
-- 5 simple, common Spanish words with English translations
+        prompt = `Generate a SUPER BASIC Spanish vocabulary lesson for absolute beginners. Include:
+- 4-5 extremely simple greeting words (hola, adiós, gracias, por favor, sí, no)
 - Brief pronunciation guide
-- Example sentence for each word
-- A 3-question multiple choice quiz to test the words
-
-Words already learned: ${wordsLearned.join(', ') || 'none'}
-Recent mistakes: ${mistakes.slice(-5).join(', ') || 'none'}
+- Simple example sentence for each word
+- A 3-question multiple choice quiz in ENGLISH
 
 Format as JSON with this structure:
 {
-  "title": "Lesson title",
+  "title": "Basic Greetings",
   "stage": 1,
   "content": [
-    {"word": "spanish word", "translation": "english", "pronunciation": "guide", "example": "sentence"}
+    {"word": "spanish word", "translation": "english", "pronunciation": "guide", "example": "simple sentence"}
   ],
   "quiz": [
-    {"question": "text", "options": ["a", "b", "c", "d"], "correct": 0}
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
   ]
-}`;
-        break;
-      case 2:
-        prompt = `Generate a Spanish phrase lesson for beginners. Include:
-- 5 simple, useful phrases with translations
-- Context for when to use each phrase
-- Brief pronunciation guide
-- A 3-question quiz (multiple choice or fill-in-the-blank)
+}
 
-Words already learned: ${wordsLearned.join(', ') || 'none'}
-Recent mistakes: ${mistakes.slice(-5).join(', ') || 'none'}
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 2:
+        prompt = `Generate a basic Spanish numbers lesson. Include:
+- Numbers 1-10 in Spanish
+- Brief pronunciation guide  
+- Simple examples with numbers
+- A 3-question multiple choice quiz in ENGLISH
 
 Format as JSON with this structure:
 {
-  "title": "Lesson title",
+  "title": "Numbers 1-10",
   "stage": 2,
+  "content": [
+    {"word": "number", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 3:
+        prompt = `Generate a Spanish colors lesson. Include:
+- 6 basic colors (red, blue, green, yellow, black, white)
+- Brief pronunciation guide
+- Simple examples with colors
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Basic Colors",
+  "stage": 3,
+  "content": [
+    {"word": "color", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 4:
+        prompt = `Generate a Spanish family members lesson. Include:
+- 6 basic family terms (mother, father, brother, sister, family, friend)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Family Members",
+  "stage": 4,
+  "content": [
+    {"word": "family term", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 5:
+        prompt = `Generate a Spanish food and drinks lesson. Include:
+- 6 common food/drink items (water, bread, milk, apple, coffee, rice)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Food & Drinks",
+  "stage": 5,
+  "content": [
+    {"word": "food/drink", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 6:
+        prompt = `Generate a Spanish animals lesson. Include:
+- 6 common animals (dog, cat, bird, fish, horse, cow)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Animals",
+  "stage": 6,
+  "content": [
+    {"word": "animal", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 7:
+        prompt = `Generate a Spanish household items lesson. Include:
+- 6 common household items (house, door, window, table, chair, bed)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Household Items",
+  "stage": 7,
+  "content": [
+    {"word": "item", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 8:
+        prompt = `Generate a Spanish clothing lesson. Include:
+- 6 clothing items (shirt, pants, shoes, hat, dress, jacket)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Clothing",
+  "stage": 8,
+  "content": [
+    {"word": "clothing", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 9:
+        prompt = `Generate a Spanish weather and seasons lesson. Include:
+- 6 weather/seasons terms (sun, rain, hot, cold, summer, winter)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Weather & Seasons",
+  "stage": 9,
+  "content": [
+    {"word": "weather term", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 10:
+        prompt = `Generate a Spanish time and calendar lesson. Include:
+- Days of the week
+- Basic time words (today, tomorrow, morning, night)
+- Brief pronunciation guide
+- Simple examples
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Time & Calendar",
+  "stage": 10,
+  "content": [
+    {"word": "time/calendar", "translation": "english", "pronunciation": "guide", "example": "simple example"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      // ========== PHRASES STAGES (11-15) ==========
+      case 11:
+        prompt = `Generate a basic Spanish phrases lesson. Include:
+- 4-5 simple greeting phrases (Good morning, How are you?, Thank you, You're welcome, Goodbye)
+- Brief pronunciation guide
+- Context for when to use each phrase
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Greeting Phrases",
+  "stage": 11,
   "content": [
     {"phrase": "spanish phrase", "translation": "english", "pronunciation": "guide", "context": "when to use"}
   ],
   "quiz": [
-    {"question": "text", "options": ["a", "b", "c", "d"], "correct": 0}
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
   ]
-}`;
-        break;
-      case 3:
-        prompt = `Generate a Spanish sentence construction lesson. Include:
-- 5 basic sentence patterns with examples
-- Grammar explanation (simple)
-- Translation and breakdown
-- A 4-question quiz testing sentence construction
+}
 
-Words already learned: ${wordsLearned.join(', ') || 'none'}
-Recent mistakes: ${mistakes.slice(-5).join(', ') || 'none'}
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 12:
+        prompt = `Generate a Spanish polite expressions lesson. Include:
+- 4-5 polite phrases (Please, Thank you, Excuse me, I'm sorry, No problem)
+- Brief pronunciation guide
+- Context for when to use each phrase
+- A 3-question multiple choice quiz in ENGLISH
 
 Format as JSON with this structure:
 {
-  "title": "Lesson title",
-  "stage": 3,
+  "title": "Polite Expressions",
+  "stage": 12,
   "content": [
-    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar note"}
+    {"phrase": "spanish phrase", "translation": "english", "pronunciation": "guide", "context": "when to use"}
   ],
   "quiz": [
-    {"question": "text", "options": ["a", "b", "c", "d"], "correct": 0}
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
   ]
-}`;
-        break;
-      case 4:
-        prompt = `Generate a Spanish dialogue lesson. Include:
-- A short conversation (4-6 exchanges) between two people
-- Translation for each line
-- Context (where this conversation happens)
-- A 4-question comprehension quiz
+}
 
-Words already learned: ${wordsLearned.join(', ') || 'none'}
-Recent mistakes: ${mistakes.slice(-5).join(', ') || 'none'}
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 13:
+        prompt = `Generate a Spanish basic questions lesson. Include:
+- 4-5 simple questions (What is your name?, How old are you?, Where are you from?, Do you speak English?)
+- Brief pronunciation guide
+- Context for when to use each phrase
+- A 3-question multiple choice quiz in ENGLISH
 
 Format as JSON with this structure:
 {
-  "title": "Lesson title",
-  "stage": 4,
+  "title": "Basic Questions",
+  "stage": 13,
+  "content": [
+    {"phrase": "spanish question", "translation": "english", "pronunciation": "guide", "context": "when to use"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 14:
+        prompt = `Generate a Spanish common expressions lesson. Include:
+- 4-5 common expressions (I don't understand, Can you repeat that?, I don't know, That's good, I like it)
+- Brief pronunciation guide
+- Context for when to use each phrase
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Common Expressions",
+  "stage": 14,
+  "content": [
+    {"phrase": "spanish expression", "translation": "english", "pronunciation": "guide", "context": "when to use"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 15:
+        prompt = `Generate a Spanish travel phrases lesson. Include:
+- 4-5 travel-related phrases (Where is...?, How much does it cost?, I need help, The bill please, Goodbye)
+- Brief pronunciation guide
+- Context for when to use each phrase
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Travel Phrases",
+  "stage": 15,
+  "content": [
+    {"phrase": "spanish phrase", "translation": "english", "pronunciation": "guide", "context": "when to use"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      // ========== SENTENCES STAGES (16-20) ==========
+      case 16:
+        prompt = `Generate a Spanish basic sentence patterns lesson. Include:
+- 4-5 very simple sentence patterns using "I am..." (I am tired, I am happy, I am here)
+- Simple grammar explanation
+- Translation and breakdown
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Basic 'I am' Sentences",
+  "stage": 16,
+  "content": [
+    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 17:
+        prompt = `Generate a Spanish possession sentences lesson. Include:
+- 4-5 simple sentences about possession (I have..., You have..., My name is...)
+- Simple grammar explanation
+- Translation and breakdown
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Possession Sentences",
+  "stage": 17,
+  "content": [
+    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 18:
+        prompt = `Generate a Spanish likes/dislikes sentences lesson. Include:
+- 4-5 simple sentences about preferences (I like..., I don't like..., I want...)
+- Simple grammar explanation
+- Translation and breakdown
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Likes & Dislikes",
+  "stage": 18,
+  "content": [
+    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 19:
+        prompt = `Generate a Spanish location sentences lesson. Include:
+- 4-5 simple sentences about location (I am in..., You are at..., It is on...)
+- Simple grammar explanation
+- Translation and breakdown
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Location Sentences",
+  "stage": 19,
+  "content": [
+    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      case 20:
+        prompt = `Generate a Spanish daily routine sentences lesson. Include:
+- 4-5 simple sentences about daily activities (I eat..., I work..., I sleep...)
+- Simple grammar explanation
+- Translation and breakdown
+- A 3-question multiple choice quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Daily Routine Sentences",
+  "stage": 20,
+  "content": [
+    {"pattern": "sentence pattern", "example": "spanish example", "translation": "english", "explanation": "simple grammar"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      // ========== DIALOGUES STAGES (21-25) ==========
+      case 21:
+        prompt = `Generate a Spanish greeting dialogue lesson. Include:
+- A very short conversation (2-3 exchanges) between two people meeting
+- Translation for each line
+- Context (meeting someone new)
+- A 3-question comprehension quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Greeting Dialogue",
+  "stage": 21,
   "content": {
-    "context": "setting description",
+    "context": "Two people meeting for the first time",
     "dialogue": [
       {"speaker": "Person A", "spanish": "text", "english": "translation"}
     ]
   },
   "quiz": [
-    {"question": "text", "options": ["a", "b", "c", "d"], "correct": 0}
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
   ]
-}`;
-        break;
-      case 5:
-        prompt = `Generate a topic-based Spanish lesson. Choose one topic: hobbies, school, food, travel, or family. Include:
-- 8-10 vocabulary words related to the topic
-- 3-4 useful phrases
-- A short paragraph using the vocabulary
-- A 5-question comprehensive quiz
+}
 
-Words already learned: ${wordsLearned.join(', ') || 'none'}
-Recent mistakes: ${mistakes.slice(-5).join(', ') || 'none'}
+IMPORTANT: Quiz in ENGLISH only.`;
+        break;
+
+      // Add more dialogue stages...
+      
+      // ========== TOPICS STAGES (26-30) ==========
+      case 26:
+        prompt = `Generate a topic-based Spanish lesson about food. Include:
+- 8-10 food-related vocabulary words
+- 3-4 useful phrases about ordering food
+- A short paragraph about food preferences
+- A 4-question comprehensive quiz in ENGLISH
 
 Format as JSON with this structure:
 {
-  "title": "Lesson title",
-  "stage": 5,
-  "topic": "topic name",
+  "title": "Food Topic",
+  "stage": 26,
+  "topic": "food",
   "content": {
     "vocabulary": [{"word": "spanish", "translation": "english"}],
     "phrases": [{"phrase": "spanish", "translation": "english"}],
     "paragraph": {"spanish": "text", "english": "translation"}
   },
   "quiz": [
-    {"question": "text", "options": ["a", "b", "c", "d"], "correct": 0}
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
   ]
-}`;
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
         break;
+
+      // Add more topic stages...
+
       default:
-        prompt = `Generate a review lesson combining all Spanish learning stages.`;
+        // Review stage for anything beyond 30
+        prompt = `Generate a Spanish review lesson combining vocabulary from previous stages. Include:
+- Review of 8-10 previously learned words/phrases
+- Simple practice exercises
+- A 5-question comprehensive quiz in ENGLISH
+
+Format as JSON with this structure:
+{
+  "title": "Spanish Review",
+  "stage": ${stage},
+  "content": [
+    {"word": "review word", "translation": "english", "pronunciation": "guide", "example": "sentence"}
+  ],
+  "quiz": [
+    {"question": "ENGLISH question", "options": ["English A", "English B", "English C", "English D"], "correct": 0}
+  ]
+}
+
+IMPORTANT: Quiz in ENGLISH only.`;
     }
 
     console.log(`Generating lesson for stage ${stage}...`);
     
     // Format prompt for Gemini
-    const fullPrompt = `You are a Spanish language teacher creating adaptive lessons. ${prompt}\n\nIMPORTANT: Respond with ONLY valid JSON, no other text. Do not use markdown code blocks.`;
+    const fullPrompt = `You are a Spanish language teacher creating adaptive lessons for complete beginners. ${prompt}\n\nCRITICAL: All quiz questions and answer options MUST be in ENGLISH only. The student doesn't know Spanish yet.\n\nIMPORTANT: Respond with ONLY valid JSON, no other text. Do not use markdown code blocks.`;
     
     // Use the CORRECT model that you have access to
     const model = 'gemini-2.5-flash';
