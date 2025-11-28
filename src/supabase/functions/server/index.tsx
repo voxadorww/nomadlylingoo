@@ -318,8 +318,6 @@ Format as JSON with this structure:
 
     let responseText = data.candidates[0].content[0].text;
     
-    let responseText = data.candidates[0].content.parts[0].text;
-    
     // Remove markdown code blocks if present
     responseText = responseText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
