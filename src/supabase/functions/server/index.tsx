@@ -281,23 +281,26 @@ Format as JSON with this structure:
     // Format prompt for Gemini
     const fullPrompt = `You are a Spanish language teacher creating adaptive lessons. ${prompt}\n\nIMPORTANT: Respond with ONLY valid JSON, no other text.`;
     
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{
-            text: fullPrompt
-          }]
-        }],
-        generationConfig: {
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateMessage?key=${geminiKey}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Use messages instead of contents/parts
+          messages: [
+            {
+              role: "system", // system role sets instructions
+              content: fullPrompt,
+            },
+          ],
           temperature: 0.7,
           maxOutputTokens: 2048,
-        }
-      })
-    });
+        }),
+      }
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
