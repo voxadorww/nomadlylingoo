@@ -311,10 +311,12 @@ Format as JSON with this structure:
     const data = await response.json();
     console.log('Gemini response received:', JSON.stringify(data).substring(0, 200));
     
-    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
+    if (!data.candidates || !data.candidates[0] || !data.candidates[0].content || !data.candidates[0].content[0]) {
       console.log('Invalid Gemini response structure:', JSON.stringify(data));
       return c.json({ error: 'Invalid response from AI' }, 500);
     }
+
+    let responseText = data.candidates[0].content[0].text;
     
     let responseText = data.candidates[0].content.parts[0].text;
     
